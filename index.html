@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Age & Date of Birth Calculator: Exact Years, Months, Days</title>
+    <meta name="description" content="Calculate your exact age in years, months, weeks, days, hours, and minutes with our free online Age & Date of Birth Calculator. Fast, accurate, and easy to use.">
+    <meta name="keywords" content="Age calculator, Date of birth calculator, Calculate exact age, Age finder tool, Free online age calculator, Chronological age calculator">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .saas-tool-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px 10px;
+        box-sizing: border-box;
+        color: #c9d1d9;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      .preview-section {
+        background: #0e1117;
+        border: 1px solid #30363d;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      }
+      .content-container h1,
+      .content-container h2,
+      .content-container h3,
+      .content-container p,
+      .content-container div {
+        text-align: center !important;
+      }
+      input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+        cursor: pointer;
+      }
+    </style>
+</head>
+<body class="bg-[#030712] text-[#c9d1d9] font-sans antialiased min-h-screen p-2 md:p-6">
+
+    <div class="saas-tool-wrapper">
+        
+        <!-- Calculator Tool Interface Section -->
+        <div class="preview-section space-y-6">
+            <header class="text-center space-y-2">
+                <h1 class="text-2xl md:text-3xl font-extrabold text-[#3b82f6] tracking-tight">Age & Date of Birth Calculator</h1>
+                <p class="text-slate-400 text-xs md:text-base">Calculate your exact age in years, months, days, hours, minutes, and upcoming birthdays instantly.</p>
+            </header>
+
+            <!-- Input Controls Card -->
+            <div class="bg-[#030712] border border-slate-800 rounded-xl p-5 max-w-2xl mx-auto space-y-4 shadow-inner">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Date of Birth</label>
+                        <input type="date" id="dobInput" 
+                            class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-blue-500 text-sm">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Calculate Age As Of</label>
+                        <input type="date" id="asOfDateInput" 
+                            class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-100 focus:outline-none focus:border-blue-500 text-sm">
+                    </div>
+                </div>
+                <div class="pt-2">
+                    <button onclick="calculateAge()" class="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-bold text-white transition-all cursor-pointer text-sm shadow-lg shadow-blue-600/25">Calculate Age</button>
+                </div>
+            </div>
+
+            <!-- Results Display Section (Hidden initially) -->
+            <div id="resultsCard" class="hidden bg-[#030712] border border-slate-800 rounded-xl p-6 max-w-2xl mx-auto space-y-6">
+                <div class="text-center border-b border-slate-800 pb-4">
+                    <span class="text-xs font-bold text-blue-400 uppercase tracking-wider">Your Exact Age</span>
+                    <div id="mainAgeResult" class="text-2xl md:text-3xl font-black text-white mt-1">--</div>
+                </div>
+
+                <!-- Detailed Breakdown Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+                        <span class="text-[11px] text-slate-400 uppercase block">Total Months</span>
+                        <span id="totalMonths" class="text-lg font-bold text-blue-400">--</span>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+                        <span class="text-[11px] text-slate-400 uppercase block">Total Weeks</span>
+                        <span id="totalWeeks" class="text-lg font-bold text-blue-400">--</span>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 col-span-2 sm:col-span-1">
+                        <span class="text-[11px] text-slate-400 uppercase block">Total Days</span>
+                        <span id="totalDays" class="text-lg font-bold text-blue-400">--</span>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+                        <span class="text-[11px] text-slate-400 uppercase block">Total Hours</span>
+                        <span id="totalHours" class="text-lg font-bold text-emerald-400">--</span>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+                        <span class="text-[11px] text-slate-400 uppercase block">Total Minutes</span>
+                        <span id="totalMinutes" class="text-lg font-bold text-emerald-400">--</span>
+                    </div>
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+                        <span class="text-[11px] text-slate-400 uppercase block">Next Birthday In</span>
+                        <span id="nextBirthday" class="text-sm font-bold text-amber-400 mt-1 block">--</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SEO Content & Texts Container -->
+        <div class="content-container bg-[#0e1117] border border-[#30363d] rounded-xl p-6 md:p-8 space-y-6">
+            <header>
+                <h2 style="color: #3b82f6; font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; border-bottom: 2px solid #30363d; padding-bottom: 0.5rem; text-align: center;">Free Age & Date of Birth Calculator: Exact Years, Months & Days</h2>
+            </header>
+
+            <p style="color: #c9d1d9; font-size: 1rem; margin-bottom: 1.5rem; text-align: center; max-width: 900px; margin-left: auto; margin-right: auto;">
+                Welcome to the ultimate <strong>Age Calculator</strong> tool! Whether you need to find out your exact chronological age for job applications, official documents, visa forms, or simply out of curiosity, our precision calculator computes years, months, weeks, days, hours, and minutes instantly based on your date of birth.
+            </p>
+
+            <h3 style="color: #3b82f6; font-size: 1.3rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 1rem; text-align: center;">Key Features of Our Age Calculator</h3>
+            
+            <p style="color: #c9d1d9; margin-bottom: 0.75rem; text-align: center;">
+                <strong style="color: #4ade80;">1. Absolute Precision:</strong> Accounts accurately for leap years, differing month lengths (28, 30, or 31 days), and seasonal calendar variations.
+            </p>
+            <p style="color: #c9d1d9; margin-bottom: 0.75rem; text-align: center;">
+                <strong style="color: #4ade80;">2. Custom Target Dates:</strong> Calculate your exact age as of today or choose any past or future reference date to see what your age was or will be.
+            </p>
+            <p style="color: #c9d1d9; margin-bottom: 0.75rem; text-align: center;">
+                <strong style="color: #4ade80;">3. Granular Time Breakdowns:</strong> View your existence broken down into total months, weeks, days, hours, and even minutes lived.
+            </p>
+            <p style="color: #c9d1d9; margin-bottom: 1.5rem; text-align: center;">
+                <strong style="color: #4ade80;">4. Next Birthday Countdown:</strong> Instantly check how many months and days are left until your next birthday celebration.
+            </p>
+
+            <h3 style="color: #3b82f6; font-size: 1.3rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 1rem; text-align: center;">How to Use the Age Finder</h3>
+            
+            <p style="color: #c9d1d9; margin-bottom: 0.75rem; text-align: center;">
+                <strong style="color: #3b82f6;">Step 1:</strong> Select your exact <strong>Date of Birth</strong> from the calendar picker.
+            </p>
+            <p style="color: #c9d1d9; margin-bottom: 0.75rem; text-align: center;">
+                <strong style="color: #3b82f6;">Step 2:</strong> Verify or change the <strong>Calculate Age As Of</strong> date (defaults to today's date automatically).
+            </p>
+            <p style="color: #c9d1d9; margin-bottom: 1.5rem; text-align: center;">
+                <strong style="color: #3b82f6;">Step 3:</strong> Click <strong>Calculate Age</strong> to view your detailed chronological breakdown instantly.
+            </p>
+
+            <h3 style="color: #3b82f6; font-size: 1.3rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 1rem; text-align: center;">Frequently Asked Questions (FAQ)</h3>
+            
+            <div style="margin-bottom: 1.25rem; text-align: center;">
+                <h4 style="color: #4ade80; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">1. How does the calculator handle leap years?</h4>
+                <p style="color: #c9d1d9; margin-bottom: 0; text-align: center;">Our algorithm automatically factors in leap years (every 4 years where February has 29 days) to ensure your calculated age in days and hours is 100% precise.</p>
+            </div>
+
+            <div style="margin-bottom: 1.25rem; text-align: center;">
+                <h4 style="color: #4ade80; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">2. Can I calculate someone else's age or past dates?</h4>
+                <p style="color: #c9d1d9; margin-bottom: 0; text-align: center;">Yes! By adjusting the "Calculate Age As Of" field, you can calculate historical ages, project future age milestones, or find the age difference between any two dates.</p>
+            </div>
+
+            <div style="margin-bottom: 1.25rem; text-align: center;">
+                <h4 style="color: #4ade80; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; text-align: center;">3. Is this age calculator free to use?</h4>
+                <p style="color: #c9d1d9; margin-bottom: 0; text-align: center;">Completely free with no registration or downloads required. It runs fully in your web browser.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Calculator Logic Script -->
+    <script>
+        // Set default "As Of Date" to today's local date
+        document.addEventListener("DOMContentLoaded", function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById("asOfDateInput").value = today;
+        });
+
+        function calculateAge() {
+            const dobVal = document.getElementById("dobInput").value;
+            const asOfVal = document.getElementById("asOfDateInput").value;
+
+            if (!dobVal) {
+                alert("Please select your Date of Birth.");
+                return;
+            }
+
+            const dob = new Date(dobVal);
+            const asOf = asOfVal ? new Date(asOfVal) : new Date();
+
+            if (dob > asOf) {
+                alert("Date of Birth cannot be later than the 'As Of' date.");
+                return;
+            }
+
+            // Years, Months, Days calculation
+            let years = asOf.getFullYear() - dob.getFullYear();
+            let months = asOf.getMonth() - dob.getMonth();
+            let days = asOf.getDate() - dob.getDate();
+
+            if (days < 0) {
+                months--;
+                const prevMonth = new Date(asOf.getFullYear(), asOf.getMonth(), 0);
+                days += prevMonth.getDate();
+            }
+
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Total metrics calculation
+            const diffTime = Math.abs(asOf - dob);
+            const totalDaysVal = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            const totalWeeksVal = Math.floor(totalDaysVal / 7);
+            const totalMonthsVal = (years * 12) + months;
+            const totalHoursVal = totalDaysVal * 24;
+            const totalMinutesVal = totalHoursVal * 60;
+
+            // Next birthday calculation
+            let nextBday = new Date(asOf.getFullYear(), dob.getMonth(), dob.getDate());
+            if (nextBday < asOf) {
+                nextBday.setFullYear(asOf.getFullYear() + 1);
+            }
+            const diffBday = Math.abs(nextBday - asOf);
+            const bdayDays = Math.ceil(diffBday / (1000 * 60 * 60 * 24));
+            const bdayMonths = Math.floor(bdayDays / 30);
+            const bdayRemDays = bdayDays % 30;
+
+            // Display results
+            document.getElementById("resultsCard").classList.remove("hidden");
+            document.getElementById("mainAgeResult").innerText = `${years} Years, ${months} Months, ${days} Days`;
+            document.getElementById("totalMonths").innerText = totalMonthsVal.toLocaleString();
+            document.getElementById("totalWeeks").innerText = totalWeeksVal.toLocaleString();
+            document.getElementById("totalDays").innerText = totalDaysVal.toLocaleString();
+            document.getElementById("totalHours").innerText = totalHoursVal.toLocaleString();
+            document.getElementById("totalMinutes").innerText = totalMinutesVal.toLocaleString();
+            document.getElementById("nextBirthday").innerText = `${bdayMonths} Months, ${bdayRemDays} Days`;
+        }
+    </script>
+
+    <!-- Technical SEO: JSON-LD Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Age & Date of Birth Calculator",
+      "operatingSystem": "All",
+      "applicationCategory": "UtilityApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "An online age calculator tool to calculate exact age in years, months, weeks, days, hours, and minutes from date of birth.",
+      "url": "https://github.com/raunideep/alpha-device-preview"
+    }
+    </script>
+</body>
+</html>
